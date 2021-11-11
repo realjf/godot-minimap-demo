@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://MiniMap.gd" type="Script" id=1]
+[ext_resource path="res://MiniMap/minimap.png" type="Texture" id=2]
+[ext_resource path="res://MiniMap/player-arrow.png" type="Texture" id=3]
+[ext_resource path="res://MiniMap/radar-screen-3.png" type="Texture" id=4]
+[ext_resource path="res://Shaders/radar_scan.gdshader" type="Shader" id=5]
+[ext_resource path="res://MiniMap/enemy.png" type="Texture" id=6]
+
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 5 )
+shader_param/shift = Vector3( 0, 0, 0 )
+shader_param/time_shift_scale = Vector3( 0.05, 0, 0 )
+shader_param/scan_color = Color( 0, 1, 0.3, 1 )
+shader_param/scan_line_width = 0.1
+shader_param/scan_line_size = 0.05
+
+[node name="MiniMap" type="MarginContainer"]
+margin_right = 400.0
+margin_bottom = 400.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Frame" type="NinePatchRect" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 395.0
+margin_bottom = 395.0
+texture = ExtResource( 2 )
+patch_margin_left = 64
+patch_margin_top = 64
+patch_margin_right = 64
+patch_margin_bottom = 64
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 395.0
+margin_bottom = 395.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="Grid" type="TextureRect" parent="MarginContainer"]
+material = SubResource( 1 )
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 370.0
+margin_bottom = 370.0
+texture = ExtResource( 4 )
+stretch_mode = 1
+
+[node name="PlayerMarker" type="Sprite" parent="MarginContainer/Grid"]
+position = Vector2( 175, 175 )
+scale = Vector2( 0.02, 0.02 )
+texture = ExtResource( 3 )
+
+[node name="MobMarker" type="Sprite" parent="MarginContainer/Grid"]
+visible = false
+scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 6 )
+
+[node name="AlertMarker" type="Sprite" parent="MarginContainer/Grid"]
+
+[connection signal="gui_input" from="." to="." method="_on_MiniMap_gui_input"]
